@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 
 public class Ingredient {
 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -63,4 +64,20 @@ public class Ingredient {
 	public void setUom(UnitOfMeasure uom) {
 		this.uom = uom;
 	}
+	
+
+	public Ingredient() {
+		
+	}
+
+	public Ingredient(String description, BigDecimal amount, Recipe recipe, UnitOfMeasure uom) {
+		
+		this.description = description;
+		this.amount = amount;
+		this.recipe = recipe;
+		this.uom = uom;
+	}
+
+	
+
 }

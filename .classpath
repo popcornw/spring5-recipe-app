@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="spring5-recipe-app/.mvn/wrapper"/>
+	<classpathentry kind="src" path="spring5-recipe-app/src/main/java"/>
+	<classpathentry kind="src" path="spring5-recipe-app/src/test/java"/>
+	<classpathentry kind="output" path="spring5-recipe-app/target/classes"/>
+</classpath>
