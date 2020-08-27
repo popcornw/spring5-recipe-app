@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import guru.springframework.commands.IngredientCommand;
+import guru.springframework.commands.RecipeCommand;
+import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.services.IngredientService;
 import guru.springframework.services.RecipeService;
 import guru.springframework.services.UnitOfMeasureService;
@@ -57,15 +59,49 @@ public class IngredientController {
 		return ("recipe/ingredient/ingredientform");
 
 	}
-	
-    @PostMapping("recipe/{recipeId}/ingredient")
-    public String saveOrUpdate(@ModelAttribute IngredientCommand command){
-        IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
 
-        log.debug("saved receipe id:" + savedCommand.getRecipeId());
-        log.debug("saved ingredient id:" + savedCommand.getId());
+	@PostMapping("recipe/{recipeId}/ingredient")
+	public String saveOrUpdate(@ModelAttribute IngredientCommand command) {
+		IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
 
-        return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";		
+		log.debug("saved receipe id:" + savedCommand.getRecipeId());
+		log.debug("saved ingredient id:" + savedCommand.getId());
+
+		return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
 	}
+	@GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    public String newIngredient(@PathVariable String recipeId, Model model){
 
+        //make sure we have a good id value
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+        //todo raise exception if null
+
+        //need to return back parent id for hidden form property
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        model.addAttribute("ingredient", ingredientCommand);
+
+        //init uom
+        ingredientCommand.setUom(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList",  unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredientform";
+    }
+
+	@GetMapping
+	@RequestMapping("recipe/{recipeid}/ingredient/{id}/delete")
+	public String deleteIngredient(@PathVariable String recipeid, @PathVariable String id) {
+		
+		ingredientService.deleteById( Long.valueOf(recipeid),Long.valueOf(id));
+		
+		
+		return ("redirect:/recipe/"+ recipeid+"/ingredients");
+		
+		
+		
+		
+		
+	}
 }
